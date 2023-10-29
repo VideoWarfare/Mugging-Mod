@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,22 +28,7 @@ namespace Mugging_Mod
 
         private void OnTick(object sender, EventArgs e)
         {
-            if (Game.Player.Character.IsInPoliceVehicle)
-            {
-                if (Game.IsKeyPressed(Keys.J))
-                {
-                    if (enableSiren)
-                    {
-                        Game.Player.Character.CurrentVehicle.IsSirenSilent = true;
-                        enableSiren = false;
-                    }
-                    else
-                    {
-                        Game.Player.Character.CurrentVehicle.IsSirenSilent = false;
-                        enableSiren = true;
-                    }
-                }
-            }
+
         }
 
         private void OnKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -53,17 +38,15 @@ namespace Mugging_Mod
 
         private void OnKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.E)
-            {
                 // Check if the player is aiming
                 if (Game.Player.Character.IsAiming)
                 {
-                    if (Game.IsControlJustPressed(GTA.Control.Context))
+                    if (e.KeyCode == Keys.E)
                     {
                         // Perform a raycast from the player's aiming position and direction
                         Vector3 aimCoords = GameplayCamera.Direction;
                         Vector3 raycastStart = Game.Player.Character.Position + new Vector3(0, 0, Game.Player.Character.HeightAboveGround);
-                        Vector3 raycastEnd = raycastStart + aimCoords * 100f; // Arbitrary distance, increase if needed
+                        Vector3 raycastEnd = raycastStart + aimCoords * 200f; // Arbitrary distance, increase if needed
                         RaycastResult raycast = World.Raycast(raycastStart, raycastEnd, IntersectFlags.Everything);
 
                         // Check if the raycast hit a Ped
@@ -72,8 +55,9 @@ namespace Mugging_Mod
                             // Save the targeted Ped to nearestPed
                             nearestPed = targetedPed;
                             Function.Call(Hash.TASK_HANDS_UP, nearestPed, -1);
-                            nearestPed.BlockPermanentEvents = true; 
+                            nearestPed.BlockPermanentEvents = true;
                             nearestPed.AlwaysKeepTask = true;
+                            nearestPed.Heading = (Game.Player.Character.Heading + 180f) % 360;
                             nearestPed.IsEnemy = true;
                             Wait(5000);
                             Game.Player.Money += 500;
@@ -85,7 +69,6 @@ namespace Mugging_Mod
                         }
                     }
                 }
-            }
         }
 
         private void OnAborted(object sender, EventArgs e)
@@ -107,6 +90,7 @@ namespace Mugging_Mod
         {
             // Add your code to be executed after the script has been initialized
             // For example, display a notification, create objects, or set up timers
+            GTA.UI.Screen.ShowHelpText("Mug Mod Loaded");
         }
     }
 }
