@@ -13,7 +13,7 @@ namespace Mugging_Mod
     public class MyCustomScript : Script
     {
         private Ped nearestPed;
-        private bool enableSiren = true;
+        private HashSet<Ped> muggedPeds = new HashSet<Ped>();
         public MyCustomScript()
         {
             // Initialize your variables and set up event handlers here
@@ -28,7 +28,38 @@ namespace Mugging_Mod
 
         private void OnTick(object sender, EventArgs e)
         {
+            // Check if the player is aiming
+            if (Game.Player.Character.IsAiming)
+            {
+                // Perform a raycast from the player's aiming position and direction
+                Vector3 aimCoords = GameplayCamera.Direction;
+                Vector3 raycastStart = Game.Player.Character.Position + new Vector3(0, 0, Game.Player.Character.HeightAboveGround);
+                Vector3 raycastEnd = raycastStart + aimCoords * 200f; // Arbitrary distance, increase if needed
+                RaycastResult raycast = World.Raycast(raycastStart, raycastEnd, IntersectFlags.Everything);
 
+                // Check if the raycast hit a Ped
+                if (raycast.DidHit && raycast.HitEntity is Ped targetedPed && !muggedPeds.Contains(targetedPed))
+                {
+                    // Save the targeted Ped to nearest Ped and add to the mugged list
+                    nearestPed = targetedPed;
+                    muggedPeds.Add(nearestPed);
+
+                    Function.Call(Hash.TASK_HANDS_UP, nearestPed, -1);
+                    nearestPed.BlockPermanentEvents = true;
+                    nearestPed.AlwaysKeepTask = true;
+                    nearestPed.Heading = (Game.Player.Character.Heading + 180f) % 360;
+                    nearestPed.IsEnemy = true;
+                    Wait(5000);
+                    Game.Player.Money += 500;
+                    GTA.UI.Screen.ShowHelpText("~w~You mugged the person for ~g~$500~w~.");
+
+                    // Rest Ped state and make them flee
+                    nearestPed.BlockPermanentEvents = false;
+                    nearestPed.AlwaysKeepTask = false;
+                    nearestPed.IsEnemy = false;
+                    MakePedFlee(nearestPed);
+                }
+            }
         }
 
         private void OnKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -38,37 +69,7 @@ namespace Mugging_Mod
 
         private void OnKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-                // Check if the player is aiming
-                if (Game.Player.Character.IsAiming)
-                {
-                    if (e.KeyCode == Keys.E)
-                    {
-                        // Perform a raycast from the player's aiming position and direction
-                        Vector3 aimCoords = GameplayCamera.Direction;
-                        Vector3 raycastStart = Game.Player.Character.Position + new Vector3(0, 0, Game.Player.Character.HeightAboveGround);
-                        Vector3 raycastEnd = raycastStart + aimCoords * 200f; // Arbitrary distance, increase if needed
-                        RaycastResult raycast = World.Raycast(raycastStart, raycastEnd, IntersectFlags.Everything);
 
-                        // Check if the raycast hit a Ped
-                        if (raycast.DidHit && raycast.HitEntity is Ped targetedPed)
-                        {
-                            // Save the targeted Ped to nearestPed
-                            nearestPed = targetedPed;
-                            Function.Call(Hash.TASK_HANDS_UP, nearestPed, -1);
-                            nearestPed.BlockPermanentEvents = true;
-                            nearestPed.AlwaysKeepTask = true;
-                            nearestPed.Heading = (Game.Player.Character.Heading + 180f) % 360;
-                            nearestPed.IsEnemy = true;
-                            Wait(5000);
-                            Game.Player.Money += 500;
-                            GTA.UI.Screen.ShowHelpText("~w~You mugged the person for ~g~$500~w~.");
-                            nearestPed.BlockPermanentEvents = false;
-                            nearestPed.AlwaysKeepTask = false;
-                            nearestPed.IsEnemy = false;
-                            MakePedFlee(nearestPed);
-                        }
-                    }
-                }
         }
 
         private void OnAborted(object sender, EventArgs e)
