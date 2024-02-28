@@ -11,8 +11,8 @@ While I am still learning the nuances of GTA V scripting and mod development, I 
 - Adds a realistic and interactive layer to the GTA V world.
 
 ## Installation
-1. Ensure you have Script Hook V in your GTA V directory.
-2. Copy the `MyCustomScript.cs` file into your `scripts` folder within your GTA V installation directory.
+1. Ensure you have Script Hook V installed.
+2. Copy the `Muggind Mod.dll` file into your `scripts` folder within your GTA V installation directory.
 
 ## Usage
 Once in-game, you can trigger the mugging sequence by aiming at any pedestrian. If the mugging is successful, you will receive $500, and the NPC will flee, ensuring they cannot be mugged again immediately.
