@@ -30,7 +30,7 @@ namespace Mugging_Mod
                 Vector3 raycastEnd = raycastStart + aimCoords * 200f;
                 RaycastResult raycast = World.Raycast(raycastStart, raycastEnd, IntersectFlags.Everything);
 
-                if (raycast.DidHit && raycast.HitEntity is Ped targetedPed && !muggedPeds.Contains(targetedPed))
+                if (raycast.DidHit && raycast.HitEntity is Ped targetedPed && !muggedPeds.Contains(targetedPed) && targetedPed.IsHuman)
                 {
                     nearestPed = targetedPed;
                     muggedPeds.Add(nearestPed);
@@ -53,14 +53,24 @@ namespace Mugging_Mod
         private void MuggingPed(Ped ped)
         {
             Function.Call(Hash.TASK_HANDS_UP, ped, 5000);
-            GTA.UI.Screen.ShowHelpText("~w~You mugged the person for ~g~$500~w~.");
+            GTA.UI.Screen.ShowHelpText("~w~You are mugging the person.");
+
             ped.BlockPermanentEvents = true;
             ped.AlwaysKeepTask = true;
             ped.IsEnemy = true;
 
             Wait(5000);
 
-            Game.Player.Money += 500;
+            // Calculate the amount of money to drop
+            Random random = new Random();
+            int moneyAmount = random.Next(100, 501); // Random amount between $100 and $500
+
+            // Drop the money on the ground at the ped's location
+            Vector3 pedPosition = ped.Position;
+            Function.Call(GTA.Native.Hash.CREATE_MONEY_PICKUPS, pedPosition.X, pedPosition.Y, pedPosition.Z, moneyAmount, 1, 0);
+
+            GTA.UI.Screen.ShowHelpText($"~w~Money dropped: ~g~${moneyAmount}");
+
             MakePedFlee(ped);
         }
 
@@ -100,7 +110,7 @@ namespace Mugging_Mod
 
         private void AfterInitialization()
         {
-            GTA.UI.Screen.ShowHelpText("Mug Mod Loaded");
+            GTA.UI.Screen.ShowHelpText("Mugging Mod Loaded - v2");
         }
     }
 }
