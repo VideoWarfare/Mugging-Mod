@@ -1,33 +1,29 @@
-# GTA V Mugging Mod Script
+# Mugging Mod for GTA V by VideoWarfare
 
 ## Overview
-This repository contains a script for a simple mugging mod in GTA V, developed as part of my initial foray into GTA V scripting. The script enables the player to mug NPCs by aiming at them, triggering a scripted interaction that ends with the player gaining money.
-
-While I am still learning the nuances of GTA V scripting and mod development, I hope that this script can serve as a foundation or source of inspiration for others embarking on their own GTA modding projects.
+This repository is dedicated to the advanced Mugging Mod script for GTA V, enhancing the gaming experience by introducing more dynamic and realistic interactions during mugging scenarios. Players can now face NPCs with unpredictable behaviors, adding depth and engagement to the gameplay.
 
 ## Features
-- Players can initiate a mugging by simply aiming at an NPC.
-- Successfully mugged NPCs cannot be mugged again, preventing exploitation.
-- Adds a realistic and interactive layer to the GTA V world.
+- **Dynamic NPC Interactions:** Initiate a mugging with any NPC, who may either comply or resist.
+- **Randomized Outcomes:** NPCs can resist by engaging in combat or comply by surrendering money.
+- **Realistic Consequences:** Mugged NPCs drop a variable amount of money and are marked to avoid repetition.
 
 ## Installation
-1. Ensure you have Script Hook V installed.
-2. Copy the `Muggind Mod.dll` file into your `scripts` folder within your GTA V installation directory.
+1. Confirm that Script Hook V and all prerequisites are up to date.
+2. Transfer the `Mugging Mod.dll` into the `scripts` folder within your GTA V directory.
 
 ## Usage
-Once in-game, you can trigger the mugging sequence by aiming at any pedestrian. If the mugging is successful, you will receive $500, and the NPC will flee, ensuring they cannot be mugged again immediately.
+Aim at any pedestrian to start a mugging. Depending on the NPC's reaction, they might fight back or drop money. Successfully mugged NPCs will flee and be temporarily immune to further mugging attempts.
 
 ## Acknowledgments
-As one of my first GTA V scripts, this project represents my initial steps into the world of game modding. The learning curve has been steep, but immensely rewarding. I encourage feedback and constructive criticism to help me improve.
-
-I hope this script can assist or inspire anyone interested in creating their own GTA mods, regardless of their experience level.
+This script represents a significant milestone in my modding journey, offering a more profound interaction mechanic within GTA V. The feedback and support from the community have been critical in developing this mod.
 
 ## Disclaimer
-This mod is intended for educational and entertainment purposes only. Please use responsibly and adhere to the game's modding policies.
+This mod is crafted for educational and entertainment purposes within the scope of GTA V's modding policy. Please engage with it responsibly.
 
 ## Future Work
-- Enhance NPC reactions and add variability to the mugging outcomes.
-- Introduce a cooldown period before the same NPC can be mugged again.
-- Implement additional player consequences to balance the risk-reward dynamic.
+- **Enhanced NPC Reactions:** Broadening the range of NPC behaviors to include seeking help or negotiating.
+- **Mugged NPC Tracking:** Developing a system to monitor the mugged status of NPCs, allowing for status resets.
+- **Increased Player Consequences:** Incorporating potential repercussions based on the reactions of bystanders or law enforcement.
 
-Thank you for your interest in this mod, and happy modding!
+Thank you for your interest in the Mugging Mod. I am eager to continue its development and contribute to the GTA modding community.
