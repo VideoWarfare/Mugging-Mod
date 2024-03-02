@@ -18,7 +18,6 @@ namespace Mugging_Mod
 
             AfterInitialization();
         }
-
         private void OnTick(object sender, EventArgs e)
         {
             if (Game.Player.Character.IsAiming)
@@ -28,7 +27,10 @@ namespace Mugging_Mod
                 Vector3 raycastEnd = raycastStart + aimCoords * 200f;
                 RaycastResult raycast = World.Raycast(raycastStart, raycastEnd, IntersectFlags.Everything);
 
-                if (raycast.DidHit && raycast.HitEntity is Ped targetedPed && !muggedPeds.Contains(targetedPed) && targetedPed.IsHuman)
+                // Draw the raycast line for debugging
+                World.DrawLine(raycastStart, raycastEnd, System.Drawing.Color.Red);
+
+                if (raycast.DidHit && raycast.HitEntity is Ped targetedPed && !muggedPeds.Contains(targetedPed) && targetedPed.IsHuman && targetedPed != Game.Player.Character)
                 {
                     nearestPed = targetedPed;
                     muggedPeds.Add(nearestPed);
