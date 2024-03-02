@@ -14,8 +14,6 @@ namespace Mugging_Mod
         public MyCustomScript()
         {
             Tick += OnTick;
-            KeyUp += OnKeyUp;
-            KeyDown += OnKeyDown;
             Aborted += OnAborted;
 
             AfterInitialization();
@@ -63,7 +61,7 @@ namespace Mugging_Mod
 
             // Calculate the amount of money to drop
             Random random = new Random();
-            int moneyAmount = random.Next(100, 501); // Random amount between $100 and $500
+            int moneyAmount = random.Next(1, 301); // Random amount between $100 and $500
 
             // Drop the money on the ground at the ped's location
             Vector3 pedPosition = ped.Position;
@@ -88,16 +86,6 @@ namespace Mugging_Mod
         {
             // Make the ped flee from the player
             Function.Call(Hash.TASK_SMART_FLEE_PED, ped, Game.Player.Character, 100f, -1, true, false);
-        }
-
-        private void OnKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            // Key release logic here
-        }
-
-        private void OnKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            // Key press logic here
         }
 
         private void OnAborted(object sender, EventArgs e)
